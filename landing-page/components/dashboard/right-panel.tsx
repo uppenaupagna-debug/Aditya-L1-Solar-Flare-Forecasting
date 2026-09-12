@@ -156,20 +156,11 @@ export function RightPanel() {
             >
               <div className="relative">
                 <div
-                  className={cn(
-                    "w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium",
-                    member.status === "active" 
-                      ? "bg-orange-500/20 text-orange-500" 
-                      : member.status === "standby"
-                        ? "bg-warning/20 text-warning"
-                        : "bg-muted text-muted-foreground"
-                  )}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-mono font-medium bg-muted text-foreground/80 border border-border/60"
                 >
                   {member.initials}
                 </div>
-                {member.status === "active" && (
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success rounded-full border-2 border-card" />
-                )}
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-success rounded-full border-2 border-card" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground truncate">
