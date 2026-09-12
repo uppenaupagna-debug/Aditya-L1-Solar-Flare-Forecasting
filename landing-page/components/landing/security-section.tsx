@@ -8,25 +8,25 @@ const securityFeatures = [
     icon: ShieldCheck,
     title: "GOES Cross-Validation",
     description: "All models validated against independent NOAA GOES-16/18 flare catalog ground truth.",
-    image: "/images/untitled folder/validation Background Removed.png",
+    image: "/images/validation_bg_removed.png",
   },
   {
     icon: BarChart3,
     title: "Conformal Prediction",
     description: "MAPIE wrappers provide mathematically guaranteed 90% confidence intervals on every forecast.",
-    image: "/images/untitled folder/conformal_bg_removed.png",
+    image: "/images/conformal_bg_removed.png",
   },
   {
     icon: Layers,
     title: "SHAP Explainability",
     description: "TreeExplainer SHAP values expose exactly which SoLEXS features drive each flare alert.",
-    image: "/images/untitled folder/shap_bg_removed.png",
+    image: "/images/shap_bg_removed.png",
   },
   {
     icon: ScanSearch,
     title: "Threshold Audit",
     description: "TSS-optimised decision boundaries verified on 11,199 held-out test flare events.",
-    image: "/images/untitled folder/threshold_bg_removed.jpg",
+    image: "/images/threshold_bg_removed.jpg",
   },
 ];
 
