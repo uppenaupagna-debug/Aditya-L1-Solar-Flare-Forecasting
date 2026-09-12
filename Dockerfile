@@ -18,9 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy source code and processed data
+# Copy source code and create data directories
 COPY src/ ./src/
-COPY data/processed/ ./data/processed/
+RUN mkdir -p /app/data/processed
 
 EXPOSE 8008
 
