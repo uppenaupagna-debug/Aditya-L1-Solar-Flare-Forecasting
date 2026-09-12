@@ -1,10 +1,9 @@
-# Multi-stage production container for Aditya-L1 Solar Flare Forecasting Mission API
-FROM python:3.11-slim as base
+# Production container for Aditya-L1 Mission Flight Operations API
+FROM python:3.11-slim AS base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PORT=8008
+    PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
@@ -15,10 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy dependency specifications
+# Copy dependency specifications and install
 COPY requirements.txt .
-
-# Install Python requirements
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code and processed data
@@ -28,6 +25,6 @@ COPY data/processed/ ./data/processed/
 EXPOSE 8008
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8008/health || exit 1
+    CMD curl -f http://localhost:${PORT:-8008}/health || exit 1
 
-CMD ["uvicorn", "src.api.server:app", "--host", "0.0.0.0", "--port", "8008"]
+CMD ["sh", "-c", "uvicorn src.api.server:app --host 0.0.0.0 --port ${PORT:-8008}"]
