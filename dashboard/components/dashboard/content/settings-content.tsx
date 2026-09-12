@@ -81,6 +81,7 @@ export function SettingsContent() {
     setIntegrationsState(prev => {
       const next = [...prev];
       next[index] = { ...next[index], connected: !next[index].connected };
+      localStorage.setItem("settings_integrations", JSON.stringify(next));
       return next;
     });
   };
@@ -140,6 +141,16 @@ export function SettingsContent() {
     setActiveOperator(localStorage.getItem("settings_operator") || "cse2");
     setWebhookUrl(localStorage.getItem("settings_webhook_url") || "");
     setCadence(localStorage.getItem("settings_cadence") || "1m");
+
+    // Load stored integrations
+    const storedIntegrations = localStorage.getItem("settings_integrations");
+    if (storedIntegrations) {
+      try {
+        setIntegrationsState(JSON.parse(storedIntegrations));
+      } catch (e) {
+        console.warn("Failed to parse stored integrations.", e);
+      }
+    }
   }, []);
 
   // Save Model Configuration
@@ -631,7 +642,9 @@ export function SettingsContent() {
                 placeholder="https://hooks.slack.com/services/..."
                 value={webhookUrl}
                 onChange={(e) => {
-                  setWebhookUrl(e.target.value);
+                  const val = e.target.value;
+                  setWebhookUrl(val);
+                  localStorage.setItem("settings_webhook_url", val);
                   if (webhookStatus !== "idle") setWebhookStatus("idle");
                 }}
                 className="flex-1 bg-background border border-border rounded-xl px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono placeholder:font-sans placeholder:text-xs text-xs"

@@ -178,16 +178,18 @@ export function IntegrationsSection() {
         </p>
       </div>
 
-      {/* Full-width image */}
-      <div className={`relative left-1/2 -translate-x-1/2 w-screen -mt-16 transition-all duration-1000 delay-200 ${
+      {/* Full-width image with seamless edge blending */}
+      <div className={`relative left-1/2 -translate-x-1/2 w-screen max-w-[1700px] -mt-8 mb-6 px-4 transition-all duration-1000 delay-200 pointer-events-none ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}>
-        <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/connection-KeJwWPQvn6l0a7C48tCARYtNEdC92H.png"
-          alt=""
-          aria-hidden="true"
-          className="w-full h-auto object-cover"
-        />
+        <div className="relative w-full flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,black_70%,transparent_100%)]">
+          <img
+            src="/images/connect-pipeline-aditya-feathered.png"
+            alt="Aditya-L1 Connect the Pipeline: Space Weather Observatory to Ground Telemetry"
+            aria-hidden="true"
+            className="w-full h-auto object-contain max-h-[600px] drop-shadow-[0_0_60px_rgba(245,158,11,0.18)]"
+          />
+        </div>
       </div>
 
       {/* Integration grid — positioned below the image for clean layout */}

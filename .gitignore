@@ -1,6 +1,6 @@
 # Data files
-data/raw/
-data/processed/
+/data/raw/
+/data/processed/
 
 # Virtual environment
 .venv/
@@ -40,3 +40,10 @@ __pycache__/
 
 
 
+
+# Backup and Agent temporary caches
+landing-page_backup/
+.serena/
+agent/
+/data/
+landing-page/public/images/untitled folder/

@@ -83,9 +83,9 @@ export function TestimonialsSection() {
   const activeTestimonial = testimonials[activeIndex];
 
   return (
-    <section id="team" ref={sectionRef} className="relative py-32 lg:py-40 bg-[#0A0E17] text-[#EDEFF2] overflow-hidden border-t border-white/5">
+    <section id="team" ref={sectionRef} className="relative py-32 lg:py-40 bg-foreground text-background overflow-hidden">
       {/* ASCII background pattern */}
-      <div className="absolute inset-0 font-mono text-[10px] text-white/[0.02] leading-tight overflow-hidden whitespace-pre select-none">
+      <div className="absolute inset-0 font-mono text-[10px] text-background/[0.02] leading-tight overflow-hidden whitespace-pre select-none">
         {mounted && Array.from({ length: 60 }, (_, i) => 
           Array.from({ length: 100 }, () => 
             Math.random() > 0.7 ? '"' : ' '
@@ -97,14 +97,15 @@ export function TestimonialsSection() {
         {/* Header */}
         <div className="flex items-center justify-between mb-20">
           <div>
-            <span className="inline-flex items-center gap-3 text-sm font-mono text-[#5EE6D0] mb-4">
-              <span className="w-12 h-px bg-white/10" />
-              Team Insight
+            <span className="inline-flex items-center gap-3 text-sm font-mono text-background/40 mb-4">
+              <span className="w-12 h-px bg-background/20" />
+              Team insights
             </span>
             <h2 className={`text-4xl lg:text-5xl font-display transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
-              IRIS X Core <span className="text-white/40">Roles.</span>
+              Trusted by the
+              <span className="text-background/40"> pipeline.</span>
             </h2>
           </div>
           
@@ -112,15 +113,15 @@ export function TestimonialsSection() {
           <div className="hidden lg:flex items-center gap-2">
             <button
               onClick={goPrev}
-              className="p-4 border border-white/10 hover:bg-white/5 transition-colors rounded"
+              className="p-4 border border-background/20 hover:bg-background/10 transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-white/70" />
+              <ArrowLeft className="w-5 h-5" />
             </button>
             <button
               onClick={goNext}
-              className="p-4 border border-white/10 hover:bg-white/5 transition-colors rounded"
+              className="p-4 border border-background/20 hover:bg-background/10 transition-colors"
             >
-              <ArrowRight className="w-5 h-5 text-white/70" />
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -130,29 +131,29 @@ export function TestimonialsSection() {
           {/* Quote side */}
           <div className="lg:col-span-7 relative">
             {/* Large quote mark */}
-            <span className="absolute -left-4 -top-8 text-[200px] font-display text-white/[0.03] leading-none select-none">
+            <span className="absolute -left-4 -top-8 text-[200px] font-display text-background/5 leading-none select-none">
               &ldquo;
             </span>
             
             <div className="relative">
               <blockquote 
                 key={activeIndex}
-                className="text-3xl lg:text-4xl xl:text-5xl font-display leading-[1.2] tracking-tight animate-fadeSlideIn text-[#EDEFF2]"
+                className="text-3xl lg:text-4xl xl:text-5xl font-display leading-[1.2] tracking-tight animate-fadeSlideIn"
               >
                 {activeTestimonial.quote}
               </blockquote>
 
               {/* Author */}
               <div className="mt-12 flex items-center gap-6">
-                <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
-                  <span className="font-display text-xl text-[#FFB627]">
+                <div className="w-14 h-14 rounded-full bg-background/10 flex items-center justify-center">
+                  <span className="font-display text-xl">
                     {activeTestimonial.author.charAt(0)}
                   </span>
                 </div>
                 <div>
-                  <p className="text-lg font-medium text-[#EDEFF2]">{activeTestimonial.author}</p>
-                  <p className="text-white/50 text-sm font-mono mt-1">
-                    {activeTestimonial.role} &middot; <span className="text-[#5EE6D0]">{activeTestimonial.company}</span>
+                  <p className="text-lg font-medium">{activeTestimonial.author}</p>
+                  <p className="text-background/60">
+                    {activeTestimonial.role}, {activeTestimonial.company}
                   </p>
                 </div>
               </div>
@@ -164,12 +165,12 @@ export function TestimonialsSection() {
             {/* Active metric - Large */}
             <div 
               key={`metric-${activeIndex}`}
-              className="p-10 border border-white/10 bg-[#121824]/60 rounded-xl shadow-xl animate-fadeSlideIn"
+              className="p-10 border border-background/20 bg-background/5 animate-fadeSlideIn"
             >
-              <span className="text-7xl lg:text-8xl font-display block mb-4 text-[#FFB627] tracking-tight">
+              <span className="text-7xl lg:text-8xl font-display block mb-4">
                 {activeTestimonial.metric.value}
               </span>
-              <span className="text-sm font-mono text-white/60 uppercase tracking-wider block">
+              <span className="text-lg text-background/60">
                 {activeTestimonial.metric.label}
               </span>
             </div>
@@ -180,10 +181,10 @@ export function TestimonialsSection() {
                 <button
                   key={idx}
                   onClick={() => goTo(idx)}
-                  className="flex-1 h-1 bg-white/10 overflow-hidden rounded-full"
+                  className="flex-1 h-1 bg-background/20 overflow-hidden"
                 >
                   <div 
-                    className={`h-full bg-[#FF5C28] transition-all duration-300 ${
+                    className={`h-full bg-background transition-all duration-300 ${
                       idx === activeIndex ? "w-full" : idx < activeIndex ? "w-full opacity-50" : "w-0"
                     }`}
                     style={idx === activeIndex ? { animation: "progress 8s linear forwards" } : {}}
@@ -193,19 +194,19 @@ export function TestimonialsSection() {
             </div>
 
             {/* Company list */}
-            <div className="mt-4 pt-6 border-t border-white/5">
-              <span className="text-xs font-mono text-white/30 uppercase tracking-widest block mb-4">
-                Pipeline Components
+            <div className="mt-4 pt-6 border-t border-background/10">
+              <span className="text-xs font-mono text-background/30 uppercase tracking-widest block mb-4">
+                Pipeline components
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {testimonials.map((t, idx) => (
                   <button
                     key={t.company}
                     onClick={() => goTo(idx)}
-                    className={`px-4 py-2 text-xs font-mono border rounded transition-all ${
+                    className={`px-4 py-2 text-sm border transition-all ${
                       idx === activeIndex 
-                        ? "border-[#FF5C28] text-[#FF5C28] bg-[#FF5C28]/10" 
-                        : "border-white/5 text-white/40 hover:border-white/20 hover:text-white/80"
+                        ? "border-background/40 text-background" 
+                        : "border-background/10 text-background/40 hover:border-background/30"
                     }`}
                   >
                     {t.company}

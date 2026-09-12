@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: "aditya_mission_telemetry"
+    static_configs:
+      - targets: ["api:8008"]
+        labels:
+          mission: "Aditya-L1"
+          subsystem: "Solar-Flare-Forecaster"
+          observatory: "ISSDC"

@@ -129,6 +129,22 @@ export function TelemetryContent() {
           playAlarmSound(440, 0.3);
         }
       }
+
+      // Dispatch real webhook notification if URL is set
+      const storedWebhook = localStorage.getItem("settings_webhook_url");
+      if (storedWebhook && storedWebhook.startsWith("http") && (status === "RED" || status === "YELLOW")) {
+        const payload = {
+          text: `🚨 *Aditya-L1 Space Weather Warning* 🚨\n*Status:* ${status === "RED" ? "CRITICAL ALERT (RED)" : "WARNING ALERT (YELLOW)"}\n*Ensemble Flare Probability:* ${(liveEnsembleProb * 100).toFixed(1)}%\n*Trigger Threshold:* ${(threshold * 100).toFixed(0)}%\n*Telemetry Stamp:* ${current.timestamp ? new Date(current.timestamp).toLocaleString() : new Date().toLocaleString()}\n*SDD2 Counts Z-Score:* ${current.solexs_sdd2_counts_clean_zscore !== undefined ? current.solexs_sdd2_counts_clean_zscore.toFixed(2) : "N/A"}\n*Action Advice:* ${status === "RED" ? "Deploy spacecraft safe mode immediately." : "Monitor solar precursor heating."}`,
+          channel: "#space-alerts"
+        };
+        fetch(storedWebhook, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).catch(err => console.warn("Failed to dispatch active alert webhook:", err));
+      }
+
       prevStatusRef.current = status;
     }
   }, [realtime, lstmWeight, threshold]);

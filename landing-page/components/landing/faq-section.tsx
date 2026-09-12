@@ -48,16 +48,16 @@ export function FaqSection() {
   };
 
   return (
-    <section id="faq" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-[#0A0E17] border-t border-white/5">
+    <section id="faq" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-background text-foreground border-t border-border">
       <div className="max-w-[900px] mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-[#5EE6D0] mb-4">
-            <span className="w-8 h-px bg-white/20" />
+          <span className="inline-flex items-center gap-3 text-sm font-mono text-[#FF5C28] mb-4">
+            <span className="w-8 h-px bg-border" />
             FAQ
-            <span className="w-8 h-px bg-white/20" />
+            <span className="w-8 h-px bg-border" />
           </span>
-          <h2 className="text-4xl md:text-5xl font-display text-[#EDEFF2] tracking-tight leading-none">
+          <h2 className="text-4xl md:text-5xl font-display text-foreground tracking-tight leading-none">
             Frequently Asked <span className="text-[#FF5C28]">Questions</span>
           </h2>
         </div>
@@ -70,16 +70,16 @@ export function FaqSection() {
               <div 
                 key={idx} 
                 className={`border rounded-lg transition-all duration-300 ${
-                  isOpen ? "border-[#FF5C28] bg-[#121824]" : "border-white/5 bg-[#121824]/30 hover:border-white/10"
+                  isOpen ? "border-[#FF5C28] bg-card shadow-sm" : "border-border/60 bg-card/30 hover:border-border"
                 }`}
               >
                 <button
                   onClick={() => toggleFaq(idx)}
-                  className="w-full flex items-center justify-between p-6 text-left font-display font-medium text-base text-[#EDEFF2] select-none"
+                  className="w-full flex items-center justify-between p-6 text-left font-display font-medium text-base text-foreground select-none"
                 >
                   <span>{faq.question}</span>
                   <span className={`p-1.5 rounded-full border transition-transform duration-300 ${
-                    isOpen ? "border-[#FF5C28]/30 text-[#FF5C28] rotate-180" : "border-white/10 text-white/50"
+                    isOpen ? "border-[#FF5C28]/30 text-[#FF5C28] rotate-180" : "border-border text-muted-foreground/60"
                   }`}>
                     {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </span>
@@ -87,11 +87,11 @@ export function FaqSection() {
                 <div 
                   className={`overflow-hidden transition-all duration-300 ease-in-out`}
                   style={{
-                    maxHeight: isOpen ? "200px" : "0px",
+                    maxHeight: isOpen ? "240px" : "0px",
                     opacity: isOpen ? 1 : 0
                   }}
                 >
-                  <p className="p-6 pt-0 text-sm leading-relaxed text-white/60 font-sans border-t border-white/5">
+                  <p className="p-6 pt-0 text-sm leading-relaxed text-muted-foreground font-sans border-t border-border/40">
                     {faq.answer}
                   </p>
                 </div>

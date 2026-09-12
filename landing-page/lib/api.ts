@@ -5,17 +5,23 @@ export const getApiBase = (): string => {
   
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
-    // Check if we are on a devtunnel URL
-    // e.g. xnttfw6w-3000.inc1.devtunnels.ms
     const devtunnelMatch = host.match(/^([a-zA-Z0-9]+)-(\d+)\.(.*devtunnels\.ms)$/);
     if (devtunnelMatch) {
       const [_, tunnelId, port, rest] = devtunnelMatch;
-      return `https://${tunnelId}-8000.${rest}`;
+      return `https://${tunnelId}-8008.${rest}`;
     }
   }
 
-  return "http://127.0.0.1:8000";
+  return "http://localhost:8008";
+};
+
+export const getWsBase = (): string => {
+  const apiBase = getApiBase();
+  if (apiBase.startsWith("https://")) {
+    return apiBase.replace("https://", "wss://");
+  }
+  return apiBase.replace("http://", "ws://");
 };
 
 export const API_BASE = getApiBase();
-
+export const WS_BASE = getWsBase();

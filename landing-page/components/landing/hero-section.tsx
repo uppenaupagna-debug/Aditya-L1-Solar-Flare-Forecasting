@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { FluxTimeline } from "./flux-timeline";
 
 const actionWords = ["Nowcasting", "Forecasting"];
 const instruments = ["Aditya-L1", "SoLEXS", "HEL1OS"];
@@ -66,7 +65,7 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
   }, [trigger]);
 
   // gradient colours cycling across letter positions
-  const gradientColors = ["#FF5C28", "#FFB627", "#5EE6D0", "#FF5C28"];
+  const gradientColors = ["#FF6B00", "#FFB347", "#67e8f9", "#fbbf24", "#FF6B00"];
 
   return (
     <>
@@ -111,7 +110,6 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
-  const [videoOpacity, setVideoOpacity] = useState(0); // Start at 0 to avoid flashing the video start
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -125,71 +123,19 @@ export function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    let rafId: number;
-    let isSeeking = false;
-    let initialSeekDone = false;
-
-    // Set initial start time when metadata is loaded
-    const handleLoadedMetadata = () => {
-      if (!initialSeekDone) {
-        video.currentTime = 23.5;
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      if (videoRef.current.currentTime >= 30 || videoRef.current.currentTime < 23.8) {
+        videoRef.current.currentTime = 23.8;
       }
-    };
-
-    if (video.readyState >= 1) {
-      video.currentTime = 23.5;
-    } else {
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
     }
+  };
 
-    const checkTime = () => {
-      if (!video) return;
-      const time = video.currentTime;
-
-      // Start fading out 0.5 seconds before loop point (at 31.0s)
-      if (time >= 31.0 && time < 31.5) {
-        setVideoOpacity(0);
-      }
-      
-      // Loop back if we reach or exceed the limit
-      if (time >= 31.5 && !isSeeking) {
-        isSeeking = true;
-        setVideoOpacity(0);
-        video.currentTime = 23.5;
-        // Call play in case seeking paused it
-        video.play().catch(() => {});
-      }
-
-      rafId = requestAnimationFrame(checkTime);
-    };
-
-    const handleSeeked = () => {
-      isSeeking = false;
-      initialSeekDone = true;
-      // Seek complete, fade back in
-      setVideoOpacity(0.8);
-    };
-
-    video.addEventListener("seeked", handleSeeked);
-    
-    // Start RAF loop
-    rafId = requestAnimationFrame(checkTime);
-
-    // Make sure it starts playing
-    video.play().catch(() => {});
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      if (video) {
-        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-        video.removeEventListener("seeked", handleSeeked);
-      }
-    };
-  }, []);
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 23.8;
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-start overflow-hidden bg-black">
@@ -201,11 +147,12 @@ export function HeroSection() {
           muted
           loop
           playsInline
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
           aria-hidden="true"
-          className="w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out"
-          style={{ opacity: videoOpacity }}
+          className="w-full h-full object-cover object-center opacity-80"
         >
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          <source src="/videos/hero.mp4#t=23.8,30" type="video/mp4" />
         </video>
         {/* Subtle overlay to ensure text readability on the left */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
@@ -238,90 +185,81 @@ export function HeroSection() {
         ))}
       </div>
       
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-24">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            {/* Small Label Text */}
-            <div 
-              className={`mb-4 transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              <span className="inline-flex items-center gap-3 text-sm font-mono text-white/60">
-                <span className="w-8 h-px bg-white/30" />
-                BAH 2026 · Problem Statement 15 · Team IRIS X
-              </span>
-            </div>
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">
+        <div className="lg:max-w-[65%]">
+        {/* Small Label Text */}
+        <div 
+          className={`mb-4 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <span className="inline-flex items-center gap-3 text-sm font-mono text-white/60">
+            <span className="w-8 h-px bg-white/30" />
+            BAH 2026 · Problem Statement 15 · Team IRIS X
+          </span>
+        </div>
 
-            {/* Tagline */}
-            <div 
-              className={`mb-8 transition-all duration-700 delay-75 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FF5C28] pl-11">
-                Solar Flare Intelligence from Aditya-L1
-              </span>
-            </div>
-            
-            {/* Main headline */}
-            <div className="mb-8">
-              <h1 
-                className={`text-left text-[clamp(2rem,4vw,5rem)] font-display leading-[0.95] tracking-tight text-white transition-all duration-1000 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <span className="block">
-                  <span className="relative inline-block text-[#FF5C28]">
-                    <BlurWord word={actionWords[Math.floor(wordIndex / 3)]} trigger={Math.floor(wordIndex / 3)} />
-                  </span>{" "}
-                  Solar Flares
-                </span>
-                <span className="block">
-                  with{" "}
-                  <span className="relative inline-block text-[#FF5C28]">
-                    <BlurWord word={instruments[wordIndex % 3]} trigger={wordIndex} />
-                  </span>
-                </span>
-              </h1>
-            </div>
-
-            {/* Subheading */}
-            <div 
-              className={`mb-12 transition-all duration-700 delay-200 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              <p className="text-xl text-white/70 leading-relaxed max-w-xl pl-1">
-                A real-time ML pipeline using SoLEXS and HEL1OS instrument data from Aditya-L1 to detect, classify, and forecast solar flare events.
-              </p>
-            </div>
-
-            {/* CTA Button */}
-            <div 
-              className={`transition-all duration-700 delay-300 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              <Button
-                asChild
-                size="lg"
-                className="bg-[#FF5C28] hover:bg-[#FF5C28]/90 text-white px-8 h-14 text-base rounded-full font-medium transition-all flex items-center gap-2 group border-none"
-              >
-                <a href="#how-it-works">
-                  Explore Pipeline
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
-            </div>
-          </div>
-          <div 
-            className={`lg:col-span-5 w-full transition-all duration-1000 delay-300 ${
+        {/* Tagline */}
+        <div 
+          className={`mb-8 transition-all duration-700 delay-75 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FF6B00] pl-11">
+            Solar Flare Intelligence from Aditya-L1
+          </span>
+        </div>
+        
+        {/* Main headline */}
+        <div className="mb-8">
+          <h1 
+            className={`text-left text-[clamp(2rem,4.5vw,5.5rem)] font-display leading-[0.95] tracking-tight text-white transition-all duration-1000 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <FluxTimeline />
-          </div>
+            <span className="block">
+              <span className="relative inline-block text-[#FF6B00]">
+                <BlurWord word={actionWords[Math.floor(wordIndex / 3)]} trigger={Math.floor(wordIndex / 3)} />
+              </span>{" "}
+              Solar Flares
+            </span>
+            <span className="block">
+              with{" "}
+              <span className="relative inline-block text-[#FF6B00]">
+                <BlurWord word={instruments[wordIndex % 3]} trigger={wordIndex} />
+              </span>
+            </span>
+          </h1>
+        </div>
+
+        {/* Subheading */}
+        <div 
+          className={`mb-12 transition-all duration-700 delay-200 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <p className="text-xl text-white/70 leading-relaxed max-w-xl pl-1">
+            A real-time ML pipeline using SoLEXS and HEL1OS instrument data from Aditya-L1 to detect classify and forecast solar flare events.
+          </p>
+        </div>
+
+        {/* CTA Button */}
+        <div 
+          className={`transition-all duration-700 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <Button
+            asChild
+            size="lg"
+            className="bg-white hover:bg-white/90 text-black px-8 h-14 text-base rounded-full font-medium transition-all flex items-center gap-2 group"
+          >
+            <a href="#features">
+              Explore Capabilities
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </a>
+          </Button>
+        </div>
         </div>
       </div>
       

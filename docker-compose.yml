@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aditya_mission_api
+    ports:
+      - "8008:8008"
+    environment:
+      - PORT=8008
+      - LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - aditya_net
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: aditya_prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - aditya_net
+
+  frontend:
+    build:
+      context: ./landing-page
+      dockerfile: Dockerfile
+    container_name: aditya_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8008
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - aditya_net
+
+networks:
+  aditya_net:
+    driver: bridge

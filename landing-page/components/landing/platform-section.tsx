@@ -68,19 +68,19 @@ export function PlatformSection() {
   const activeProduct = products[activeTab];
 
   return (
-    <section id="platform" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-[#121824] border-t border-white/5">
+    <section id="platform" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden bg-card text-foreground border-t border-border">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         
         {/* Header */}
         <div className="mb-16">
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-[#5EE6D0] mb-4">
-            <span className="w-8 h-px bg-white/20" />
+          <span className="inline-flex items-center gap-3 text-sm font-mono text-[#FF5C28] mb-4">
+            <span className="w-8 h-px bg-border" />
             Platform & Integrations
           </span>
-          <h2 className="text-4xl md:text-5xl font-display text-[#EDEFF2] tracking-tight leading-none mb-6">
+          <h2 className="text-4xl md:text-5xl font-display text-foreground tracking-tight leading-none mb-6">
             What We <span className="text-[#FF5C28]">Built</span>
           </h2>
-          <p className="text-base lg:text-lg text-white/60 leading-relaxed max-w-2xl">
+          <p className="text-base lg:text-lg text-muted-foreground leading-relaxed max-w-2xl">
             A comprehensive, operational space-weather framework combining visual user interfaces, programmatic APIs, and automatic downstream telemetry integrations.
           </p>
         </div>
@@ -98,20 +98,20 @@ export function PlatformSection() {
                   onClick={() => setActiveTab(idx)}
                   className={`text-left p-6 border rounded-xl transition-all duration-300 ${
                     isActive 
-                      ? "border-[#FF5C28] bg-[#0A0E17] shadow-[0_4px_20px_rgba(255,92,40,0.05)]" 
-                      : "border-white/5 bg-[#0A0E17]/30 hover:border-white/10"
+                      ? "border-[#FF5C28] bg-background shadow-sm" 
+                      : "border-border/60 bg-background/30 hover:border-border"
                   }`}
                 >
                   <div className="flex items-center gap-3 mb-2">
                     {product.icon}
-                    <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest">
+                    <span className="font-mono text-[10px] text-muted-foreground/60 uppercase tracking-widest">
                       {product.tagline}
                     </span>
                   </div>
-                  <h3 className="text-lg font-display text-[#EDEFF2] tracking-tight mb-2">
+                  <h3 className="text-lg font-display text-foreground tracking-tight mb-2">
                     {product.title}
                   </h3>
-                  <p className="text-xs text-white/50 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
                     {product.description}
                   </p>
                 </button>
@@ -120,7 +120,7 @@ export function PlatformSection() {
           </div>
 
           {/* Detailed Content Display Right (lg:col-span-8) */}
-          <div className="lg:col-span-8 bg-[#0A0E17] border border-white/5 rounded-xl p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-8 bg-background border border-border rounded-xl p-8 flex flex-col justify-between shadow-sm relative overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF5C28]/[0.02] blur-3xl pointer-events-none rounded-full" />
             
@@ -129,22 +129,22 @@ export function PlatformSection() {
               {/* Info Detail */}
               <div className="md:col-span-6 space-y-6">
                 <div>
-                  <span className="text-[10px] font-mono text-[#5EE6D0] uppercase tracking-wider block mb-1">
+                  <span className="text-[10px] font-mono text-[#FF5C28] uppercase tracking-wider block mb-1">
                     System Component
                   </span>
-                  <h3 className="text-2xl lg:text-3xl font-display text-[#EDEFF2] tracking-tight leading-none">
+                  <h3 className="text-2xl lg:text-3xl font-display text-foreground tracking-tight leading-none">
                     {activeProduct.title}
                   </h3>
                 </div>
 
-                <p className="text-sm text-white/70 leading-relaxed font-sans">
+                <p className="text-sm text-muted-foreground leading-relaxed font-sans">
                   {activeProduct.description}
                 </p>
 
                 <ul className="space-y-2.5">
                   {activeProduct.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs text-white/80 font-mono">
-                      <Check className="w-3.5 h-3.5 text-[#5EE6D0] shrink-0 mt-0.5" />
+                    <li key={idx} className="flex items-start gap-2.5 text-xs text-foreground/80 font-mono">
+                      <Check className="w-3.5 h-3.5 text-[#FF5C28] shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}

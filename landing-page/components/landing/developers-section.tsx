@@ -23,7 +23,7 @@ const features = [
 
 export function DevelopersSection() {
   const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLSection>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,15 +47,15 @@ export function DevelopersSection() {
         }`}
       >
         <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2813%29-OQ2DiR3ElVsUg8kTvTL1kC5A3Q6maM.png"
-          alt=""
+          src="/images/inference-pipeline-aditya.png"
+          alt="Aditya-L1 Inference Pipeline in Sun-Earth Orbit"
           aria-hidden="true"
-          className="w-full h-full object-cover object-left-top"
+          className="w-full h-full object-cover object-right-center"
         />
         {/* Fade left edge */}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
-        {/* Fade top edge */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-transparent" />
+        {/* Fade top and bottom edges */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background/80" />
       </div>
 
       {/* All text content sits on top */}
